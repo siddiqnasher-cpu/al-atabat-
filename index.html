@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مؤسسة العتبات الخيرية | Al Atbat Charity</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="logo_placeholder.png" alt="العتبات" class="logo-img" onerror="this.src='https://via.placeholder.com/150x50?text=Al+Atbat'">
+                <span>العتبات</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#about">من نحن</a></li>
+                <li><a href="#projects">مشاريعنا</a></li>
+                <li><a href="#news">الأخبار</a></li>
+                <li><a href="#donate" class="btn btn-primary">تبرع الآن</a></li>
+                <li><a href="#contact">اتصل بنا</a></li>
+                <li id="nav-auth-btn"><a href="#" id="open-login-btn" class="btn btn-outline" style="padding:8px 18px;">تسجيل الدخول</a></li>
+                <li id="nav-user-info" style="display:none;"><span id="logged-user-name" style="font-weight:600;color:var(--primary-color);"></span> &nbsp;|&nbsp; <a href="#" id="logout-main-btn" style="color:red;">خروج</a></li>
+            </ul>
+            <div class="menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1 class="fade-in">تمكين المجتمعات عبر العطاء المبارك</h1>
+            <p class="fade-in">شاركونا في رسالتنا لدعم المحتاجين عبر الرحمة والتعليم والتنمية المستدامة.</p>
+            <div class="hero-btns fade-in">
+                <a href="#donate" class="btn btn-gold">ساهم معنا</a>
+                <a href="#about" class="btn btn-outline">تعرف علينا</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>رؤيتنا ورسالتنا</h2>
+                <div class="line"></div>
+            </div>
+            <div class="about-grid">
+                <div class="about-card glass">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h3>الرحمة والإغاثة</h3>
+                    <p>تقديم المساعدات العاجلة للأسر المتعففة وتوفير الاحتياجات الأساسية.</p>
+                </div>
+                <div class="about-card glass">
+                    <i class="fas fa-book-open"></i>
+                    <h3>التعليم والتنوير</h3>
+                    <p>دعم مراكز تعليم القرآن الكريم والعلوم النافعة لبناء جيل واعي.</p>
+                </div>
+                <div class="about-card glass">
+                    <i class="fas fa-seedling"></i>
+                    <h3>التنمية المستدامة</h3>
+                    <p>تمكين الشباب والنساء من خلال مشاريع تنموية توفر لهم حياة كريمة.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-title">
+                <h2>مشاريعنا الجارية</h2>
+                <p>ساهم في صنع التغيير من خلال دعم أحد مشاريعنا القائمة.</p>
+            </div>
+            <div class="project-grid" id="project-container">
+                <!-- Projects will be loaded via JS -->
+            </div>
+        </div>
+    </section>
+
+    <section id="news" class="news-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>آخر الأخبار</h2>
+                <p>تابع أحدث أخبار ومستجدات مؤسسة العتبات الخيرية.</p>
+                <div class="line"></div>
+            </div>
+            <div class="news-grid" id="news-container">
+                <!-- News loaded via JS -->
+            </div>
+        </div>
+    </section>
+
+    <section id="donate" class="donation-section">
+        <div class="container">
+            <div class="donation-card glass">
+                <h2>اجعل أثرك باقياً</h2>
+                <p>كل درهم تضعه اليوم يغرس أملاً في غدِ شخص محتاج.</p>
+                <form id="donation-form">
+                    <div class="amount-selector">
+                        <button type="button" class="amount-btn" data-amount="50">50 ر.س</button>
+                        <button type="button" class="amount-btn" data-amount="100">100 ر.س</button>
+                        <button type="button" class="amount-btn" data-amount="500">500 ر.س</button>
+                        <input type="number" placeholder="مبلغ آخر" id="custom-amount">
+                    </div>
+                    <button type="submit" class="btn btn-gold btn-block">متابعة التبرع</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact-section" class="contact-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>ارسل لنا رسالة</h2>
+                <p>يسعدنا التواصل معك والرد على استفساراتك.</p>
+                <div class="line"></div>
+            </div>
+            <div class="contact-card glass">
+                <form id="contact-form">
+                    <div class="contact-grid">
+                        <div class="input-group">
+                            <label>الاسم</label>
+                            <input type="text" id="contact-name" placeholder="اسمك الكامل" required>
+                        </div>
+                        <div class="input-group">
+                            <label>رقم الجوال</label>
+                            <input type="tel" id="contact-phone" placeholder="+967...">
+                        </div>
+                        <div class="input-group" style="grid-column: 1 / -1;">
+                            <label>البريد الإلكتروني</label>
+                            <input type="email" id="contact-email" placeholder="email@example.com">
+                        </div>
+                        <div class="input-group" style="grid-column: 1 / -1;">
+                            <label>الرسالة</label>
+                            <textarea id="contact-msg" rows="5" placeholder="اكتب رسالتك هنا..." required></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top:20px;padding:14px 40px;">إرسال الرسالة <i class="fas fa-paper-plane"></i></button>
+                    <p id="contact-success" style="display:none;color:green;margin-top:15px;font-weight:600;">✓ تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <h3>العتبات الخيرية</h3>
+                    <p>مؤسسة تسعى لنشر الخير وبناء الإنسان.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#about">من نحن</a></li>
+                        <li><a href="#projects">المشاريع</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>تواصل معنا</h4>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:siddiqnasher@gmail.com" style="color:#ccc;text-decoration:none;">siddiqnasher@gmail.com</a></p>
+                    <p><i class="fas fa-phone"></i> <a href="tel:+967774246114" style="color:#ccc;text-decoration:none;" dir="ltr">+967 774 246 114</a></p>
+                    <p><i class="fab fa-whatsapp" style="color:#25D366;"></i> <a href="https://wa.me/967774246114" target="_blank" style="color:#25D366;text-decoration:none;">واتساب</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 العتبات الخيرية. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login / Register Modal -->
+    <div id="auth-modal" class="auth-modal-overlay" style="display:none;">
+        <div class="auth-modal-box glass">
+            <button id="auth-modal-close" class="auth-close-btn">&#x2715;</button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">تسجيل الدخول</button>
+                <button class="auth-tab" data-tab="register">حساب جديد</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-main-form" class="auth-form">
+                <div class="input-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="login-email" required placeholder="example@email.com">
+                </div>
+                <div class="input-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="login-pass" required placeholder="••••••••">
+                </div>
+                <p id="login-error" style="color:red;display:none;">البريد أو كلمة المرور غير صحيحة.</p>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top:15px;">دخول</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form" style="display:none;">
+                <div class="input-group">
+                    <label>الاسم الكامل</label>
+                    <input type="text" id="reg-name" required placeholder="محمد علي">
+                </div>
+                <div class="input-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="reg-email" required placeholder="example@email.com">
+                </div>
+                <div class="input-group">
+                    <label>كلمة المرور</label>
+                    <input type="password" id="reg-pass" required placeholder="8 أحرف على الأقل" minlength="6">
+                </div>
+                <p id="reg-error" style="color:red;display:none;"></p>
+                <button type="submit" class="btn btn-gold btn-block" style="margin-top:15px;">إنشاء حساب</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
