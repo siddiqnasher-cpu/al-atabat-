@@ -8,6 +8,15 @@ window.addEventListener('scroll', () => {
     }
 });
 
+// Mobile Menu Toggle
+const menuBtn = document.querySelector('.menu-btn');
+const navLinks = document.querySelector('.nav-links');
+if (menuBtn && navLinks) {
+    menuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+}
+
 // Mock Project Data (Default)
 const defaultProjects = [
     {
@@ -154,10 +163,12 @@ function initAuth() {
     if (session) updateNavForUser(session);
 
     // Open modal
-    document.getElementById('open-login-btn')?.addEventListener('click', (e) => {
+    const openModal = (e) => {
         e.preventDefault();
         document.getElementById('auth-modal').style.display = 'flex';
-    });
+    };
+    document.getElementById('open-login-btn')?.addEventListener('click', openModal);
+    document.getElementById('hero-login-btn')?.addEventListener('click', openModal);
 
     // Close modal
     document.getElementById('auth-modal-close')?.addEventListener('click', () => {
@@ -235,6 +246,9 @@ function initAuth() {
         sessionStorage.removeItem('al_atbat_user');
         document.getElementById('nav-auth-btn').style.display = '';
         document.getElementById('nav-user-info').style.display = 'none';
+        if (document.getElementById('hero-login-btn')) {
+            document.getElementById('hero-login-btn').style.display = 'inline-block';
+        }
     });
 }
 
@@ -242,4 +256,7 @@ function updateNavForUser(user) {
     document.getElementById('nav-auth-btn').style.display = 'none';
     document.getElementById('nav-user-info').style.display = 'flex';
     document.getElementById('logged-user-name').innerHTML = `<a href="user_dashboard.html" title="حسابي" style="color:var(--secondary-color);text-decoration:none;"><i class="fas fa-user-circle"></i> مرحباً، ${user.name}</a>`;
+    if (document.getElementById('hero-login-btn')) {
+        document.getElementById('hero-login-btn').style.display = 'none';
+    }
 }
