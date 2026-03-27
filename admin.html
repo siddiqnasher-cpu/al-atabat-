@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div id="login-screen" class="admin-auth">
         <div class="login-card glass">
@@ -193,9 +195,12 @@
             <form id="reply-form">
                 <input type="hidden" id="reply-msg-id">
                 <div class="input-group">
-                    <p id="reply-msg-context" style="margin-bottom:15px;padding:10px;background:#f0f0f0;border-radius:8px;font-size:0.9rem;color:#555;"></p>
+                    <p id="reply-msg-context"
+                        style="margin-bottom:15px;padding:10px;background:#f0f0f0;border-radius:8px;font-size:0.9rem;color:#555;">
+                    </p>
                     <label>نص الرد</label>
-                    <textarea id="reply-text" required rows="4" placeholder="اكتب ردك هنا..." style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;font-family:'Cairo';"></textarea>
+                    <textarea id="reply-text" required rows="4" placeholder="اكتب ردك هنا..."
+                        style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;font-family:'Cairo';"></textarea>
                 </div>
                 <div class="modal-btns">
                     <button type="submit" class="btn btn-primary">إرسال الرد</button>
@@ -207,4 +212,5 @@
 
     <script src="admin.js"></script>
 </body>
+
 </html>

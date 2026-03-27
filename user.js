@@ -1,7 +1,7 @@
 // Ensure user is logged in
 document.addEventListener('DOMContentLoaded', () => {
     const session = JSON.parse(sessionStorage.getItem('al_atbat_user'));
-    
+
     if (!session) {
         // Not logged in, redirect to home
         window.location.href = 'index.html';
@@ -20,11 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Navigation setup
     setupNavigation();
-    
+
     // Forms setup
     setupSettingsForm(session);
     setupMessaging(session);
-    
+
     // Logout
     document.getElementById('logout-main-btn')?.addEventListener('click', (e) => {
         e.preventDefault();
@@ -40,7 +40,7 @@ function setupNavigation() {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const pageId = link.dataset.page;
-            
+
             navLinks.forEach(l => l.classList.remove('active'));
             link.classList.add('active');
 
@@ -57,7 +57,7 @@ function setupSettingsForm(currentSession) {
     // ... [Settings code remains intact] ...
     document.getElementById('user-settings-form')?.addEventListener('submit', (e) => {
         e.preventDefault();
-        
+
         const newName = document.getElementById('set-name').value.trim();
         const newPass = document.getElementById('set-pass').value;
         const successMsg = document.getElementById('settings-success');
@@ -65,14 +65,14 @@ function setupSettingsForm(currentSession) {
         // Update local storage DB
         const users = JSON.parse(localStorage.getItem('al_atbat_users') || '[]');
         const userIndex = users.findIndex(u => u.email === currentSession.email);
-        
+
         if (userIndex !== -1) {
             users[userIndex].name = newName;
             if (newPass) {
                 users[userIndex].password = newPass;
             }
             localStorage.setItem('al_atbat_users', JSON.stringify(users));
-            
+
             // Update session
             currentSession.name = newName;
             if (newPass) currentSession.password = newPass;
@@ -83,8 +83,8 @@ function setupSettingsForm(currentSession) {
             document.getElementById('sidebar-user-name').textContent = newName;
             document.getElementById('welcome-name').textContent = newName;
 
-            document.getElementById('set-pass').value = ''; 
-            
+            document.getElementById('set-pass').value = '';
+
             successMsg.style.display = 'block';
             setTimeout(() => successMsg.style.display = 'none', 3000);
         }
@@ -111,7 +111,7 @@ function setupMessaging(session) {
             replies: []
         });
         localStorage.setItem('al_atbat_messages', JSON.stringify(messages));
-        
+
         document.getElementById('user-msg-form').reset();
         loadUserMessages(session);
     });
@@ -120,12 +120,12 @@ function setupMessaging(session) {
 function loadUserMessages(session) {
     const container = document.getElementById('user-messages-list');
     if (!container) return;
-    
+
     const allMsgs = JSON.parse(localStorage.getItem('al_atbat_messages') || '[]');
     const myMsgs = allMsgs.filter(m => m.email === session.email);
-    
+
     container.innerHTML = '';
-    
+
     if (myMsgs.length === 0) {
         container.innerHTML = `
             <div class="glass" style="padding:30px;display:flex;align-items:center;justify-content:center;">

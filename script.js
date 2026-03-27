@@ -1,262 +1,323 @@
-// Navbar Scroll Effect
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-});
+// =========================
+// Main Site Logic with Firebase
+// =========================
 
-// Mobile Menu Toggle
+// ---------- عناصر عامة ----------
 const menuBtn = document.querySelector('.menu-btn');
 const navLinks = document.querySelector('.nav-links');
-if (menuBtn && navLinks) {
-    menuBtn.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-}
 
-// Mock Project Data (Default)
-const defaultProjects = [
-    {
-        id: 1,
-        title: "سقيا الماء للمناطق الجافة",
-        description: "توفير مياه نظيفة صالحة للشرب لأكثر من 500 أسرة في المناطق المحتاجة.",
-        image: "https://images.unsplash.com/photo-1541810271566-d7547ccf4404?auto=format&fit=crop&w=800&q=80",
-        progress: 65
-    },
-    {
-        id: 2,
-        title: "كفالة يتيم وبناء مستقبل",
-        description: "رعاية شاملة للأيتام تشمل التعليم والمأوى والرعاية الصحية.",
-        image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80",
-        progress: 40
-    },
-    {
-        id: 3,
-        title: "دعم مراكز تعليم القرآن",
-        description: "تجهيز وتطوير مراكز تعليم القرآن الكريم في القرى البعيدة.",
-        image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=800&q=80",
-        progress: 85
-    }
-];
-
-function loadProjects() {
-    const container = document.getElementById('project-container');
-    if (!container) return;
-
-    let projects = JSON.parse(localStorage.getItem('al_atbat_projects'));
-    if (!projects || projects.length === 0) {
-        projects = defaultProjects;
-        localStorage.setItem('al_atbat_projects', JSON.stringify(defaultProjects));
-    }
-
-    container.innerHTML = '';
-    projects.forEach(project => {
-        const card = document.createElement('div');
-        card.className = 'project-card';
-        card.innerHTML = `
-            <img src="${project.image}" alt="${project.title}" class="project-img">
-            <div class="project-info">
-                <h3>${project.title}</h3>
-                <p>${project.description}</p>
-                <div style="margin-top: 15px; background: #eee; height: 10px; border-radius: 5px; overflow: hidden;">
-                    <div style="width: ${project.progress}%; background: var(--secondary-color); height: 100%;"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.9rem;">
-                    <span>اكتمل ${project.progress}%</span>
-                    <a href="#donate" style="color: var(--primary-color); font-weight: bold;">ساهم الآن</a>
-                </div>
-            </div>
-        `;
-        container.appendChild(card);
-    });
-}
-
-// Donation Button Logic
-const amountBtns = document.querySelectorAll('.amount-btn');
-amountBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        amountBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('custom-amount').value = btn.dataset.amount;
-    });
+menuBtn?.addEventListener('click', () => {
+  navLinks?.classList.toggle('active');
 });
 
-document.getElementById('donation-form')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const amount = document.getElementById('custom-amount').value;
-    if (!amount) {
-        alert('يرجى اختيار أو إدخال مبلغ التبرع');
-        return;
-    }
-    alert(`شكراً لمبادرتك! سيتم تحويلك لبوابة الدفع للتبرع بمبلغ ${amount} ر.س`);
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks?.classList.remove('active');
+  });
 });
 
-// Contact Form Submission
-document.getElementById('contact-form')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('contact-name').value.trim();
-    const phone = document.getElementById('contact-phone').value.trim();
-    const email = document.getElementById('contact-email').value.trim();
-    const msg = document.getElementById('contact-msg').value.trim();
+// ---------- المشاريع ----------
+const projectContainer = document.getElementById('project-container');
 
-    const messages = JSON.parse(localStorage.getItem('al_atbat_messages') || '[]');
-    messages.unshift({
-        id: Date.now(),
-        name,
-        phone,
-        email,
-        message: msg,
-        date: new Date().toLocaleString('ar-SA'),
-        read: false
-    });
-    localStorage.setItem('al_atbat_messages', JSON.stringify(messages));
+async function loadProjects() {
+  if (!projectContainer) return;
 
-    // Show success and reset
-    document.getElementById('contact-form').reset();
-    const success = document.getElementById('contact-success');
-    success.style.display = 'block';
-    setTimeout(() => success.style.display = 'none', 5000);
-});
+  try {
+    projectContainer.innerHTML = '<p style="padding:20px;">جاري تحميل المشاريع...</p>';
 
-// Load News on Homepage
-function loadNews() {
-    const container = document.getElementById('news-container');
-    if (!container) return;
-    const news = JSON.parse(localStorage.getItem('al_atbat_news') || '[]');
-    container.innerHTML = '';
-    if (news.length === 0) {
-        container.innerHTML = '<div class="news-empty"><i class="fas fa-newspaper" style="font-size:3rem;margin-bottom:15px;"></i><p>لا توجد أخبار متاحة حالياً.</p></div>';
-        return;
+    const q = window.fb.query(
+      window.fb.collection(window.db, 'projects'),
+      window.fb.orderBy('createdAt', 'desc')
+    );
+
+    const snapshot = await window.fb.getDocs(q);
+
+    if (snapshot.empty) {
+      projectContainer.innerHTML = '<p style="padding:20px;">لا توجد مشاريع حالياً.</p>';
+      return;
     }
-    news.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'news-card';
-        const dateStr = item.date ? new Date(item.date).toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-        const imgHtml = item.image
-            ? `<img src="${item.image}" alt="${item.title}" class="news-card-img" onerror="this.style.display='none'">`
-            : `<div style="height:180px;background:linear-gradient(135deg,var(--primary-color),var(--accent-color));display:flex;align-items:center;justify-content:center;"><i class="fas fa-newspaper" style="font-size:3rem;color:rgba(255,255,255,0.4);"></i></div>`;
-        card.innerHTML = `
-            ${imgHtml}
-            <div class="news-card-body">
-                <p class="news-date">${dateStr}</p>
-                <h3>${item.title}</h3>
-                <p>${item.summary}</p>
-            </div>
-        `;
-        container.appendChild(card);
+
+    projectContainer.innerHTML = '';
+
+    snapshot.forEach((docSnap) => {
+      const project = docSnap.data();
+
+      const card = document.createElement('div');
+      card.className = 'project-card glass';
+      card.innerHTML = `
+        <img src="${escapeHtml(project.image || 'https://via.placeholder.com/600x400?text=Project')}" alt="${escapeHtml(project.title || '')}" class="project-img">
+        <div class="project-info">
+          <h3>${escapeHtml(project.title || '')}</h3>
+          <p>${escapeHtml(project.description || '')}</p>
+          <div class="progress-bar">
+            <div class="progress" style="width:${Number(project.progress || 0)}%"></div>
+          </div>
+          <span>${Number(project.progress || 0)}%</span>
+        </div>
+      `;
+      projectContainer.appendChild(card);
     });
+  } catch (error) {
+    console.error(error);
+    projectContainer.innerHTML = '<p style="padding:20px;color:red;">تعذر تحميل المشاريع.</p>';
+  }
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    loadProjects();
-    loadNews();
-    initAuth();
-});
+// ---------- الأخبار ----------
+const newsContainer = document.getElementById('news-container');
 
-// ===== Auth Logic =====
-function initAuth() {
-    const session = JSON.parse(sessionStorage.getItem('al_atbat_user'));
-    if (session) updateNavForUser(session);
+async function loadNews() {
+  if (!newsContainer) return;
 
-    // Open modal
-    const openModal = (e) => {
-        e.preventDefault();
-        document.getElementById('auth-modal').style.display = 'flex';
-    };
-    document.getElementById('open-login-btn')?.addEventListener('click', openModal);
-    document.getElementById('hero-login-btn')?.addEventListener('click', openModal);
+  try {
+    newsContainer.innerHTML = '<p style="padding:20px;">جاري تحميل الأخبار...</p>';
 
-    // Close modal
-    document.getElementById('auth-modal-close')?.addEventListener('click', () => {
-        document.getElementById('auth-modal').style.display = 'none';
+    const q = window.fb.query(
+      window.fb.collection(window.db, 'news'),
+      window.fb.orderBy('date', 'desc')
+    );
+
+    const snapshot = await window.fb.getDocs(q);
+
+    if (snapshot.empty) {
+      newsContainer.innerHTML = '<p style="padding:20px;">لا توجد أخبار حالياً.</p>';
+      return;
+    }
+
+    newsContainer.innerHTML = '';
+
+    snapshot.forEach((docSnap) => {
+      const news = docSnap.data();
+
+      const card = document.createElement('div');
+      card.className = 'news-card glass';
+      card.innerHTML = `
+        <img src="${escapeHtml(news.image || 'https://via.placeholder.com/600x400?text=News')}" alt="${escapeHtml(news.title || '')}" class="news-img">
+        <div class="news-content">
+          <span class="news-date">${escapeHtml(news.date || '')}</span>
+          <h3>${escapeHtml(news.title || '')}</h3>
+          <p>${escapeHtml(news.summary || '')}</p>
+        </div>
+      `;
+      newsContainer.appendChild(card);
     });
-
-    // Click outside to close
-    document.getElementById('auth-modal')?.addEventListener('click', (e) => {
-        if (e.target === document.getElementById('auth-modal')) {
-            document.getElementById('auth-modal').style.display = 'none';
-        }
-    });
-
-    // Tabs
-    document.querySelectorAll('.auth-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            const target = tab.dataset.tab;
-            document.getElementById('login-main-form').style.display = target === 'login' ? 'block' : 'none';
-            document.getElementById('register-form').style.display = target === 'register' ? 'block' : 'none';
-        });
-    });
-
-    // Login submit
-    document.getElementById('login-main-form')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('login-email').value.trim();
-        const pass = document.getElementById('login-pass').value;
-        const errEl = document.getElementById('login-error');
-
-        // Check admin
-        if (email === 'siddiqnasher@gmail.com' && pass === '774246114Aa') {
-            window.location.href = 'admin.html';
-            return;
-        }
-
-        // Check registered users
-        const users = JSON.parse(localStorage.getItem('al_atbat_users') || '[]');
-        const user = users.find(u => u.email === email && u.password === pass);
-        if (user) {
-            sessionStorage.setItem('al_atbat_user', JSON.stringify(user));
-            window.location.href = 'user_dashboard.html';
-        } else {
-            errEl.style.display = 'block';
-        }
-    });
-
-    // Register submit
-    document.getElementById('register-form')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('reg-name').value.trim();
-        const email = document.getElementById('reg-email').value.trim();
-        const pass = document.getElementById('reg-pass').value;
-        const errEl = document.getElementById('reg-error');
-
-        const users = JSON.parse(localStorage.getItem('al_atbat_users') || '[]');
-        if (users.find(u => u.email === email)) {
-            errEl.textContent = 'هذا البريد الإلكتروني مسجل مسبقاً.';
-            errEl.style.display = 'block';
-            return;
-        }
-
-        const newUser = { name, email, password: pass };
-        users.push(newUser);
-        localStorage.setItem('al_atbat_users', JSON.stringify(users));
-        sessionStorage.setItem('al_atbat_user', JSON.stringify(newUser));
-        
-        window.location.href = 'user_dashboard.html';
-    });
-
-    // Logout
-    document.getElementById('logout-main-btn')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        sessionStorage.removeItem('al_atbat_user');
-        document.getElementById('nav-auth-btn').style.display = '';
-        document.getElementById('nav-user-info').style.display = 'none';
-        if (document.getElementById('hero-login-btn')) {
-            document.getElementById('hero-login-btn').style.display = 'inline-block';
-        }
-    });
+  } catch (error) {
+    console.error(error);
+    newsContainer.innerHTML = '<p style="padding:20px;color:red;">تعذر تحميل الأخبار.</p>';
+  }
 }
 
-function updateNavForUser(user) {
-    document.getElementById('nav-auth-btn').style.display = 'none';
-    document.getElementById('nav-user-info').style.display = 'flex';
-    document.getElementById('logged-user-name').innerHTML = `<a href="user_dashboard.html" title="حسابي" style="color:var(--secondary-color);text-decoration:none;"><i class="fas fa-user-circle"></i> مرحباً، ${user.name}</a>`;
-    if (document.getElementById('hero-login-btn')) {
-        document.getElementById('hero-login-btn').style.display = 'none';
+// ---------- رسائل التواصل ----------
+const contactForm = document.getElementById('contact-form');
+const contactSuccess = document.getElementById('contact-success');
+
+contactForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('contact-name').value.trim();
+  const phone = document.getElementById('contact-phone').value.trim();
+  const email = document.getElementById('contact-email').value.trim();
+  const message = document.getElementById('contact-msg').value.trim();
+
+  if (!name || !message) {
+    alert('أدخل الاسم والرسالة');
+    return;
+  }
+
+  try {
+    await window.fb.addDoc(window.fb.collection(window.db, 'messages'), {
+      name,
+      phone,
+      email,
+      message,
+      date: new Date().toLocaleDateString('ar-SA'),
+      createdAt: window.fb.serverTimestamp(),
+      replies: []
+    });
+
+    contactForm.reset();
+    if (contactSuccess) {
+      contactSuccess.style.display = 'block';
+      setTimeout(() => {
+        contactSuccess.style.display = 'none';
+      }, 4000);
     }
+  } catch (error) {
+    console.error(error);
+    alert('فشل إرسال الرسالة');
+  }
+});
+
+// ---------- التبرعات ----------
+const amountButtons = document.querySelectorAll('.amount-btn');
+const customAmount = document.getElementById('custom-amount');
+const donationForm = document.getElementById('donation-form');
+
+amountButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    amountButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (customAmount) customAmount.value = btn.dataset.amount || '';
+  });
+});
+
+donationForm?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const amount = customAmount?.value?.trim() || '';
+  if (!amount) {
+    alert('اختر مبلغ التبرع أولاً');
+    return;
+  }
+  alert(`تم اختيار مبلغ ${amount} ر.س. اربط بوابة الدفع لاحقًا لإكمال العملية.`);
+});
+
+// ---------- نافذة تسجيل الدخول ----------
+const authModal = document.getElementById('auth-modal');
+const authModalClose = document.getElementById('auth-modal-close');
+const openLoginBtn = document.getElementById('open-login-btn');
+const heroLoginBtn = document.getElementById('hero-login-btn');
+
+const authTabs = document.querySelectorAll('.auth-tab');
+const loginMainForm = document.getElementById('login-main-form');
+const registerForm = document.getElementById('register-form');
+
+const loginError = document.getElementById('login-error');
+const regError = document.getElementById('reg-error');
+
+function openAuthModal(defaultTab = 'login') {
+  if (!authModal) return;
+  authModal.style.display = 'flex';
+  switchAuthTab(defaultTab);
+}
+
+function closeAuthModal() {
+  if (!authModal) return;
+  authModal.style.display = 'none';
+  if (loginError) loginError.style.display = 'none';
+  if (regError) regError.style.display = 'none';
+}
+
+function switchAuthTab(tabName) {
+  authTabs.forEach(tab => tab.classList.remove('active'));
+  document.querySelector(`.auth-tab[data-tab="${tabName}"]`)?.classList.add('active');
+
+  if (tabName === 'login') {
+    if (loginMainForm) loginMainForm.style.display = 'block';
+    if (registerForm) registerForm.style.display = 'none';
+  } else {
+    if (loginMainForm) loginMainForm.style.display = 'none';
+    if (registerForm) registerForm.style.display = 'block';
+  }
+}
+
+openLoginBtn?.addEventListener('click', (e) => {
+  e.preventDefault();
+  openAuthModal('login');
+});
+
+heroLoginBtn?.addEventListener('click', (e) => {
+  e.preventDefault();
+  openAuthModal('login');
+});
+
+authModalClose?.addEventListener('click', closeAuthModal);
+
+authModal?.addEventListener('click', (e) => {
+  if (e.target === authModal) closeAuthModal();
+});
+
+authTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    switchAuthTab(tab.dataset.tab);
+  });
+});
+
+// ---------- تسجيل الدخول ----------
+loginMainForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-pass').value.trim();
+
+  try {
+    await window.fb.signInWithEmailAndPassword(window.auth, email, password);
+    if (loginError) loginError.style.display = 'none';
+    closeAuthModal();
+  } catch (error) {
+    console.error(error);
+    if (loginError) loginError.style.display = 'block';
+  }
+});
+
+// ---------- إنشاء حساب ----------
+registerForm?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-pass').value.trim();
+
+  try {
+    const cred = await window.fb.createUserWithEmailAndPassword(window.auth, email, password);
+
+    if (name) {
+      await window.fb.updateProfile(cred.user, {
+        displayName: name
+      });
+    }
+
+    if (regError) {
+      regError.style.display = 'none';
+      regError.textContent = '';
+    }
+
+    closeAuthModal();
+  } catch (error) {
+    console.error(error);
+    if (regError) {
+      regError.style.display = 'block';
+      regError.textContent = 'فشل إنشاء الحساب: ' + error.message;
+    }
+  }
+});
+
+// ---------- حالة المستخدم ----------
+const navAuthBtn = document.getElementById('nav-auth-btn');
+const navUserInfo = document.getElementById('nav-user-info');
+const loggedUserName = document.getElementById('logged-user-name');
+const logoutMainBtn = document.getElementById('logout-main-btn');
+
+window.fb.onAuthStateChanged(window.auth, (user) => {
+  if (user) {
+    if (navAuthBtn) navAuthBtn.style.display = 'none';
+    if (navUserInfo) navUserInfo.style.display = 'list-item';
+    if (loggedUserName) loggedUserName.textContent = user.displayName || user.email || 'مستخدم';
+  } else {
+    if (navAuthBtn) navAuthBtn.style.display = 'list-item';
+    if (navUserInfo) navUserInfo.style.display = 'none';
+    if (loggedUserName) loggedUserName.textContent = '';
+  }
+});
+
+logoutMainBtn?.addEventListener('click', async (e) => {
+  e.preventDefault();
+  try {
+    await window.fb.signOut(window.auth);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+// ---------- تشغيل أولي ----------
+loadProjects();
+loadNews();
+
+// ---------- مساعد ----------
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar scrolled">
         <div class="container">
             <div class="logo">
                 <a href="index.html" style="color:white;text-decoration:none;display:flex;align-items:center;gap:10px;">
-                    <img src="logo_placeholder.png" alt="العتبات" class="logo-img" onerror="this.src='https://via.placeholder.com/150x50?text=Al+Atbat'">
+                    <img src="logo_placeholder.png" alt="العتبات" class="logo-img"
+                        onerror="this.src='https://via.placeholder.com/150x50?text=Al+Atbat'">
                     <span>العتبات</span>
                 </a>
             </div>
@@ -23,7 +26,8 @@
                 <li><a href="index.html#home">الرئيسية</a></li>
                 <li><a href="index.html#projects">المشاريع</a></li>
                 <li id="nav-user-info" style="display:flex;align-items:center;">
-                    <span id="logged-user-name" style="font-weight:600;color:var(--secondary-color);"></span> &nbsp;|&nbsp; 
+                    <span id="logged-user-name" style="font-weight:600;color:var(--secondary-color);"></span>
+                    &nbsp;|&nbsp;
                     <a href="#" id="logout-main-btn" style="color:white;"><i class="fas fa-sign-out-alt"></i> خروج</a>
                 </li>
             </ul>
@@ -54,14 +58,14 @@
 
         <!-- Main Content -->
         <main class="user-main-content">
-            
+
             <!-- Default Page: Overview -->
             <div id="overview-page" class="user-page">
                 <div class="welcome-banner glass">
                     <h2>مرحباً بك يا <span id="welcome-name" style="color:var(--secondary-color);">عضو</span>!</h2>
                     <p>شكراً لكونك جزءاً من مجتمع العتبات الخيرية. هنا يمكنك متابعة تبرعاتك ومساهماتك.</p>
                 </div>
-                
+
                 <div class="user-stats-grid">
                     <div class="user-stat-card glass">
                         <i class="fas fa-wallet" style="color:#2a9d8f;"></i>
@@ -92,7 +96,8 @@
             <!-- Page: Donations -->
             <div id="donations-page" class="user-page hidden">
                 <h2 style="color:var(--primary-color);margin-bottom:20px;">سجل التبرعات</h2>
-                <div class="glass" style="padding:30px;min-height:300px;display:flex;align-items:center;justify-content:center;">
+                <div class="glass"
+                    style="padding:30px;min-height:300px;display:flex;align-items:center;justify-content:center;">
                     <div class="activity-empty">
                         <i class="fas fa-box-open" style="font-size:3rem;color:#ddd;margin-bottom:10px;"></i>
                         <p>لا توجد تبرعات سابقة في سجلك.</p>
@@ -103,13 +108,14 @@
             <!-- Page: Messages -->
             <div id="messages-page" class="user-page hidden">
                 <h2 style="color:var(--primary-color);margin-bottom:20px;">رسائلي مع الإدارة</h2>
-                
+
                 <!-- Send New Message Form -->
                 <div class="glass" style="padding:25px;margin-bottom:30px;">
                     <h4 style="margin-bottom:15px;color:#555;"><i class="fas fa-paper-plane"></i> إرسال رسالة جديدة</h4>
                     <form id="user-msg-form">
                         <div class="input-group" style="margin-bottom:15px;">
-                            <textarea id="user-msg-text" required rows="4" placeholder="اكتب رسالتك هنا..." style="width:100%;padding:15px;border:1px solid #ddd;border-radius:10px;font-family:'Cairo';resize:vertical;"></textarea>
+                            <textarea id="user-msg-text" required rows="4" placeholder="اكتب رسالتك هنا..."
+                                style="width:100%;padding:15px;border:1px solid #ddd;border-radius:10px;font-family:'Cairo';resize:vertical;"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">إرسال</button>
                     </form>
@@ -133,7 +139,8 @@
                             </div>
                             <div class="input-group">
                                 <label>البريد الإلكتروني</label>
-                                <input type="email" id="set-email" required readonly style="background:#f0f0f0;cursor:not-allowed;">
+                                <input type="email" id="set-email" required readonly
+                                    style="background:#f0f0f0;cursor:not-allowed;">
                             </div>
                             <div class="input-group" style="grid-column:1/-1;">
                                 <label>كلمة المرور الجديدة (اختياري)</label>
@@ -141,7 +148,8 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary" style="margin-top:20px;">حفظ التغييرات</button>
-                        <p id="settings-success" style="color:green;display:none;margin-top:10px;">تم تحديث بياناتك بنجاح!</p>
+                        <p id="settings-success" style="color:green;display:none;margin-top:10px;">تم تحديث بياناتك
+                            بنجاح!</p>
                     </form>
                 </div>
             </div>
@@ -151,4 +159,5 @@
 
     <script src="user.js"></script>
 </body>
+
 </html>

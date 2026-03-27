@@ -1,7 +1,8 @@
 /* User Dashboard Specific Styles */
 body {
     background-color: #f4f7f6;
-    padding-top: 80px; /* offset navbar */
+    padding-top: 80px;
+    /* offset navbar */
 }
 
 .user-dashboard-container {
@@ -17,7 +18,8 @@ body {
 .user-sidebar {
     width: 280px;
     flex-shrink: 0;
-    padding: 0; /* padding applied to sections */
+    padding: 0;
+    /* padding applied to sections */
     overflow: hidden;
     position: sticky;
     top: 100px;
@@ -26,7 +28,7 @@ body {
 .user-avatar-section {
     padding: 30px 20px 20px;
     text-align: center;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .avatar-circle {
@@ -40,7 +42,7 @@ body {
     justify-content: center;
     color: white;
     font-size: 2rem;
-    box-shadow: 0 4px 10px rgba(13,59,50,0.2);
+    box-shadow: 0 4px 10px rgba(13, 59, 50, 0.2);
 }
 
 .user-name {
@@ -74,19 +76,19 @@ body {
 }
 
 .user-nav a:hover {
-    background: rgba(13,59,50,0.03);
+    background: rgba(13, 59, 50, 0.03);
     color: var(--primary-color);
 }
 
 .user-nav a.active {
-    background: rgba(13,59,50,0.06);
+    background: rgba(13, 59, 50, 0.06);
     color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
 .sidebar-footer {
     padding: 20px;
-    border-top: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* Main Content */
@@ -97,7 +99,7 @@ body {
 
 .welcome-banner {
     padding: 40px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7)), url('hero.png') center/cover;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7)), url('hero.png') center/cover;
     position: relative;
     overflow: hidden;
     margin-bottom: 30px;
@@ -191,17 +193,19 @@ body {
 .settings-grid .input-group input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(13,59,50,0.1);
+    box-shadow: 0 0 0 3px rgba(13, 59, 50, 0.1);
 }
 
 @media (max-width: 900px) {
     .user-dashboard-container {
         flex-direction: column;
     }
+
     .user-sidebar {
         width: 100%;
         position: static;
     }
+
     .settings-grid {
         grid-template-columns: 1fr;
     }
