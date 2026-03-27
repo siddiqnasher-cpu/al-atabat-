@@ -34,6 +34,7 @@
             </div>
             <nav class="sidebar-nav">
                 <a href="#" class="active" data-page="home"><i class="fas fa-chart-line"></i> الإحصائيات</a>
+                <a href="#" data-page="users"><i class="fas fa-users"></i> الأعضاء الجدد</a>
                 <a href="#" data-page="projects"><i class="fas fa-tasks"></i> إدارة المشاريع</a>
                 <a href="#" data-page="news"><i class="fas fa-newspaper"></i> إدارة الأخبار</a>
                 <a href="#" data-page="messages"><i class="fas fa-envelope"></i> رسائل التواصل</a>
@@ -73,6 +74,21 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div id="users-page" class="admin-page hidden">
+                <table class="admin-table glass">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-users-list">
+                        <!-- Users listed here -->
+                    </tbody>
+                </table>
             </div>
 
             <div id="projects-page" class="admin-page hidden">

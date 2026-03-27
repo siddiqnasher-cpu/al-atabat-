@@ -35,6 +35,7 @@ navLinks.forEach(link => {
         // Update title
         const titles = {
             'home': 'نظرة عامة',
+            'users': 'الأعضاء الجدد',
             'projects': 'إدارة المشاريع',
             'news': 'إدارة الأخبار',
             'messages': 'رسائل التواصل'
@@ -320,3 +321,39 @@ document.getElementById('reply-form')?.addEventListener('submit', (e) => {
 
 loadAdminMessages();
 
+// ===== Users Management =====
+function loadAdminUsers() {
+    const list = document.getElementById('admin-users-list');
+    if (!list) return;
+    
+    const users = JSON.parse(localStorage.getItem('al_atbat_users') || '[]');
+    list.innerHTML = '';
+    
+    if (users.length === 0) {
+        list.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#777;padding:20px;">لا يوجد أعضاء مسجلين بعد</td></tr>';
+        return;
+    }
+    
+    users.forEach((user, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${user.name}</td>
+            <td>${user.email}</td>
+            <td>
+                <button class="btn-sm text-danger" onclick="deleteUser('${user.email}')" title="حذف العضو"><i class="fas fa-trash"></i></button>
+            </td>
+        `;
+        list.appendChild(row);
+    });
+}
+
+window.deleteUser = (email) => {
+    if (confirm('هل أنت متأكد من حذف هذا العضو؟')) {
+        let users = JSON.parse(localStorage.getItem('al_atbat_users') || '[]');
+        users = users.filter(u => u.email !== email);
+        localStorage.setItem('al_atbat_users', JSON.stringify(users));
+        loadAdminUsers();
+    }
+};
+
+loadAdminUsers();
